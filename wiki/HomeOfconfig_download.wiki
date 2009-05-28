@@ -1,3 +1,4 @@
+#labels wiki,readme,manual
 = Introduction to config_download.pl script =
 
 config_download.pl is Perl script allowing downloading configs from various devices using standard protocols. It can run various commands on the devices and log their outputs. Currently ssh, cisco-telnet, ftp and http methods are supported.
