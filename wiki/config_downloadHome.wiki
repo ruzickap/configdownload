@@ -91,7 +91,7 @@ Like in previous example, you have to specify host, port, username and password.
 
 ||timeout||default timeout for all commands, if the expected prompt is not there before timeout value you will get error||
 ||ssh_options||contain list of parameters used when script is calling ssh command (none by default)||
-||login_prompt||shows how the login prompt should look like in regular expression after successful login (by default: .*)||
+||login_prompt||shows how the login prompt should look like in regular expression after successful login (by default: {{{.*}}})||
 ||password_prompt||like login_promt set how password prompt looks like (by default: {{{[Pp]assword.*?:|[Pp]assphrase.*?:)}}}||
 ||prompt||is a default prompt used by device (by default: .*)||
 
@@ -144,7 +144,7 @@ Version: 0.1
 
 Release date: June 2009
 
-Platforms: All (Linux, NT, BSD, Solaris and other *NIX's, BeOS, OS/2...)
+Platforms: All (Linux, NT, BSD, Solaris and other UNIX's, BeOS, OS/2...)
 
 Author: Petr Ruzicka <petr.ruzicka@gmail.com>
 
