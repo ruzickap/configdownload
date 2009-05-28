@@ -148,4 +148,4 @@ Platforms: All (Linux, NT, BSD, Solaris and other UNIX's, BeOS, OS/2...)
 
 Author: Petr Ruzicka <petr.ruzicka@gmail.com>
 
-Latest version: configdownload.code.google.com
+Latest version: http://code.google.com/p/configdownload/
