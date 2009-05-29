@@ -1,4 +1,8 @@
-#labels wiki,readme,manual
+#labels wiki,readme,manual,cisco,telnet,configuration,download,ssh,ftp
+= Table of Content =
+
+<wiki:toc max_depth="3" />
+
 = Introduction to config_download.pl script =
 
 config_download.pl is Perl script allowing downloading configs from various devices using standard protocols. It can run various commands on the devices and log their outputs. Currently ssh, cisco-telnet, ftp and http methods are supported.
@@ -146,4 +150,4 @@ Platforms: All (Linux, NT, BSD, Solaris and other UNIX's, BeOS, OS/2...)
 
 Author: Petr Ruzicka <petr.ruzicka@gmail.com>
 
-Latest version: http://code.google.com/p/configdownload/
+Latest version: http://configdownload.googlecode.com/
