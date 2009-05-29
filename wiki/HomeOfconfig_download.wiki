@@ -79,7 +79,7 @@ every host you can specify connection details, timeouts, log and prompt.
 
 Every hostname (testbb0rt02) section can contain commands which will be executed and you can also specify timeout for them:
 
-{{{<commands timeout=1>show ip route 192.168.20.1</commands>}}}
+{{{ <commands timeout=1>show ip route 192.168.20.1</commands> }}}
 
 ||timeout||specifies how long can command run before it goes back to "prompt". If command run longer than the "timeout value" you will get error.||
 
@@ -114,8 +114,8 @@ Like in previous example, you have to specify host, port, username and password.
 ||timeout         ||default timeout for all commands, if the expected prompt is not there before timeout value you will get error||
 
 Every command section can specify "timeout" and "prompt":
-{{{<commands prompt=".*password:\s*" timeout="1" >configupload -all 
--scp 192.168.0.16,root,/tftpboot/test0sa01.cfg</commands>}}}
+
+{{{ <commands prompt=".*password:\s*" timeout="1" >configupload -all -scp 192.168.0.16,root,/tftpboot/test0sa01.cfg</commands> }}}
 
 == HTTP file get ==
 
@@ -156,6 +156,9 @@ this method.
 ||remote_directory || remote directory on the FTP server (default: ".")||
 ||username         || login (default: anonymous)||
 
+= Example XML file =
+
+Example XML Config file can be found [SampleXMLfile here].
 
 = Author, version, license information =
 
