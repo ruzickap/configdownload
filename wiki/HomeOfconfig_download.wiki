@@ -19,7 +19,16 @@ Before you will run the script please ensure you have these modules installed in
 = Basic configuration =
 The configuration is based on input XML file added as parameter to config_download.pl script.
 
-Here is the description of XML input file:
+The script has following parameters:
+
+{{{
+config_download.pl [--debug] [--destination=/my_path/]
+}}}
+
+||-d, --debug   ||enable debug mode, all commands output will be displayed||
+||--destination ||save all files to specified directory||
+
+Here is the description of main section of XML input file:
 
 The configuration XML file is splitted into few sections:
 
@@ -62,10 +71,11 @@ login_timeout="1" output_log="./testbb0rt01-192.168.0.58.log" login_prompt='(?m:
 You can see 2 hosts defined in this section: testbb0rt01, testbb0rt02. For
 every host you can specify connection details, timeouts, log and prompt.
 
-||login_timout||specifies how much time can take login procedure (default 15 seconds)||
-||login_prompt||defines how should look prompt after successful login (by default it's cisco standard prompt)||
-||output_file||defines output log where the whole interaction is stored (default it's hostname-ip.log)||
-||prompt||how looks default prompt after executing the commands (by default it's cisco standard prompt)||
+||login_timout ||specifies how much time can take login procedure (default 15 seconds)||
+||login_prompt ||defines how should look prompt after successful login (by default it's cisco standard prompt)||
+||output_file ||defines output log where the whole interaction is stored (default it's hostname-ip.log)||
+||port        ||port (default: 23)||
+||prompt      ||how looks default prompt after executing the commands (by default it's cisco standard prompt)||
 
 Every hostname (testbb0rt02) section can contain commands which will be executed and you can also specify timeout for them:
 
@@ -95,12 +105,13 @@ password_prompt='[Pp]assword.*?:|[Pp]assphrase.*?:' prompt='(?m:^\s*[\w.-]+\s?(?
 
 Like in previous example, you have to specify host, port, username and password. You can also set few parameters like timeout, log_file, ssh_options, login_prompot, password_prompt and prompt.
 
-||login_prompt||shows how the login prompt should look like in regular expression after successful login (by default: {{{.*}}})||
-||output_file||defines output log where the whole interaction is stored (default it's hostname-ip.log)||
-||password_prompt||like login_promt set how password prompt looks like (by default: {{{[Pp]assword.*?:|[Pp]assphrase.*?:)}}}||
-||prompt||is a default prompt used by device (by default: .*)||
-||ssh_options||contain list of parameters used when script is calling ssh command (none by default)||
-||timeout||default timeout for all commands, if the expected prompt is not there before timeout value you will get error||
+||login_prompt    ||shows how the login prompt should look like in regular expression after successful login (by default: {{{.*}}})||
+||output_file     ||defines output log where the whole interaction is stored (default it's hostname-ip.log)||
+||password_prompt ||like login_promt set how password prompt looks like (by default: {{{[Pp]assword.*?:|[Pp]assphrase.*?:)}}}||
+||port            ||port (default: 22)||
+||prompt          ||is a default prompt used by device (by default: .*)||
+||ssh_options     ||contain list of parameters used when script is calling ssh command (none by default)||
+||timeout         ||default timeout for all commands, if the expected prompt is not there before timeout value you will get error||
 
 Every command section can specify "timeout" and "prompt":
 {{{<commands prompt=".*password:\s*" timeout="1" >configupload -all 
