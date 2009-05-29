@@ -9,10 +9,10 @@ config_download.pl is Perl script allowing downloading configs from various devi
 
 The script is written in Perl and depends on few external modules:
 
-  * Net-Telnet-Cisco -> Net::Telnet.
-  * Net-SSH-Expect -> Expect -> IO::Pty
-  * Net-FTP-Recursive
-  * HTTP::Lite
+  * [http://search.cpan.org/dist/Net-Telnet-Cisco/ Net-Telnet-Cisco] -> [http://search.cpan.org/~jrogers/Net-Telnet/ Net::Telnet]
+  * [http://search.cpan.org/~bnegrao/Net-SSH-Expect/ Net-SSH-Expect] -> [http://search.cpan.org/~rgiersig/Expect/ Expect] -> [http://search.cpan.org/~rgiersig/IO-Tty/ IO::Pty]
+  * [http://search.cpan.org/~jdlee/Net-FTP-Recursive/ Net-FTP-Recursive]
+  * [http://search.cpan.org/~rhooper/HTTP-Lite/ HTTP::Lite]
 
 Before you will run the script please ensure you have these modules installed in your system.
 
