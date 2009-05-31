@@ -16,6 +16,13 @@ The script is written in Perl and depends on few external modules:
 
 Before you will run the script please ensure you have these modules installed in your system.
 
+= Download =
+
+
+{{{
+svn checkout http://configdownload.googlecode.com/svn/trunk/ configdownload-read-only
+}}}
+
 = Basic configuration =
 The configuration is based on input XML file added as parameter to config_download.pl script.
 
