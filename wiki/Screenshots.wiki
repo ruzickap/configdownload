@@ -1,0 +1,7 @@
+#summary screenshots of config_download.pl script
+
+= Screenshots =
+
+= Video =
+
+<wiki:video url="http://www.youtube.com/watch?v=1J5X629Th0A"/>
