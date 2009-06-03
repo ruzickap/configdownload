@@ -1,5 +1,5 @@
 #summary Sample XML file
-#labels example,xml
+#labels example,xml,Featured,config_download.pl,script
 
 <wiki:toc max_depth="2" />
 
