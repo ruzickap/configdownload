@@ -14,7 +14,10 @@ http://lh5.ggpht.com/_BoELb-ffCl4/SiPy032S4mI/AAAAAAAADKY/t2QI-S2isZQ/s720/confi
 [http://lh3.ggpht.com/_BoELb-ffCl4/SiPy1GqL0pI/AAAAAAAADKc/oOmFJDYYHAM/d/config_download4.jpeg 4]
 http://lh3.ggpht.com/_BoELb-ffCl4/SiPy1GqL0pI/AAAAAAAADKc/oOmFJDYYHAM/s720/config_download4.jpeg
 
+Download all screenshots here: http://configdownload.googlecode.com/files/config_download_screenshots.tar.bz2
+
 = Video =
 
 <wiki:video url="http://www.youtube.com/watch?v=1J5X629Th0A"/>
- 
+
+Download full video here: http://configdownload.googlecode.com/files/config_download-example.ogv
