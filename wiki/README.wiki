@@ -1,5 +1,5 @@
 #summary README of config_download
-#labels readme,README
+#labels readme,README,Featured
 
 = README file =
 
