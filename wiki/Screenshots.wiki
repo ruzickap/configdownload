@@ -1,5 +1,5 @@
 #summary screenshots of config_download.pl script
-#labels config_download.pl,screenshots,example,video
+#labels config_download.pl,screenshots,example,video,Featured
 
 = Screenshots =
 
