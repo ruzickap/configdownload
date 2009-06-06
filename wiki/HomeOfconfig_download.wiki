@@ -16,12 +16,55 @@ The script is written in Perl and depends on few external modules:
 
 Before you will run the script please ensure you have these modules installed in your system.
 
-= Download =
+= Installation =
+Install all possible modules to your system using your package manager:
 
+{{{
+ aptitude install libnet-telnet-cisco-perl libexpect-perl libxml-simple-perl
+}}}
+
+Install/build non-common modules from [http://www.cpan.org/ CPAN]:
+
+{{{
+   perl -MCPAN -e 'install IO::Tty'
+   perl -MCPAN -e 'install Net::Telnet::Cisco'
+   perl -MCPAN -e 'install Net::SSH::Expect'  
+   perl -MCPAN -e 'install Net::FTP::Recursive'
+   perl -MCPAN -e 'install HTTP::Lite'         
+   perl -MCPAN -e 'install XML::Simple'        
+}}}
+
+or you can use compile it yourselves:
+(You need to have gcc installed if you want to compile [http://search.cpan.org/~rgiersig/IO-Tty/ IO-Tty])
+
+{{{
+   DESTINATION_DIRECTORY="/tmp/config_download"
+   mkdir -pv $DESTINATION_DIRECTORY/sources    
+   wget http://search.cpan.org/CPAN/authors/id/R/RG/RGIERSIG/IO-Tty-1.08.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
+   wget http://search.cpan.org/CPAN/authors/id/J/JR/JROGERS/Net-Telnet-3.03.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
+   wget http://search.cpan.org/CPAN/authors/id/J/JO/JOSHUA/Net-Telnet-Cisco-1.10.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
+   wget http://search.cpan.org/CPAN/authors/id/R/RG/RGIERSIG/Expect-1.21.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources        
+   wget http://search.cpan.org/CPAN/authors/id/B/BN/BNEGRAO/Net-SSH-Expect-1.09.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources 
+   wget http://search.cpan.org/CPAN/authors/id/J/JD/JDLEE/Net-FTP-Recursive-2.04.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
+   wget http://search.cpan.org/CPAN/authors/id/R/RH/RHOOPER/HTTP-Lite-2.1.6.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources     
+   wget http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.18.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources      
+   for DIR in $DESTINATION_DIRECTORY/sources/*; do cd $DIR && perl Makefile.PL PREFIX=$DESTINATION_DIRECTORY`perl -MConfig -e 'print $Config{"siteprefix"}'` && make && make install && cd ..; done                                                                                                                       
+   wget http://configdownload.googlecode.com/svn/trunk/config_download.pl --directory-prefix=$DESTINATION_DIRECTORY && chmod a+x $DESTINATION_DIRECTORY/config_download.pl
+}}}
+
+== Download ==
+
+You can download the lastest version here:
+
+http://code.google.com/p/configdownload/downloads/list
+
+You can also use most actual SVN version: 
 
 {{{
 svn checkout http://configdownload.googlecode.com/svn/trunk/ configdownload-read-only
 }}}
+
+(Don't forget to download/install required Perl modules otherwise the script will not work)
 
 = Basic configuration =
 The configuration is based on input XML file added as parameter to config_download.pl script.
@@ -163,20 +206,18 @@ this method.
 ||remote_directory || remote directory on the FTP server (default: ".")||
 ||username         || login (default: anonymous)||
 
-= Example XML file =
+= Example XML file and screenshots =
 
 Example XML Config file can be found [SampleXMLfile here].
+
+[Screenshots]
 
 = Author, version, license information =
 
 License: GNU General Public License Version 3 (see LICENSE file)
 
-Version: 0.1
-
-Release date: June 2009
-
 Platforms: All (Linux, NT, BSD, Solaris and other UNIX's, BeOS, OS/2...)
 
 Author: Petr Ruzicka <petr.ruzicka@gmail.com>
 
-Latest version: http://configdownload.googlecode.com/
+Home page: http://configdownload.googlecode.com/
