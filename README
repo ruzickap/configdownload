@@ -33,6 +33,7 @@ Install/build non-common modules from CPAN:
 
 or you can use compile it yourselves:
 (You need to have gcc installed if you want to compile IO-Tty)
+(you should have libxml-simple-perl installed)
 
    DESTINATION_DIRECTORY="/tmp/config_download"
    mkdir -pv $DESTINATION_DIRECTORY/sources
@@ -43,7 +44,6 @@ or you can use compile it yourselves:
    wget http://search.cpan.org/CPAN/authors/id/B/BN/BNEGRAO/Net-SSH-Expect-1.09.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
    wget http://search.cpan.org/CPAN/authors/id/J/JD/JDLEE/Net-FTP-Recursive-2.04.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
    wget http://search.cpan.org/CPAN/authors/id/R/RH/RHOOPER/HTTP-Lite-2.1.6.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
-   wget http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.18.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources
    for DIR in $DESTINATION_DIRECTORY/sources/*; do cd $DIR && perl Makefile.PL PREFIX=$DESTINATION_DIRECTORY`perl -MConfig -e 'print $Config{"siteprefix"}'` && make && make install && cd ..; done
    wget http://configdownload.googlecode.com/svn/trunk/config_download.pl --directory-prefix=$DESTINATION_DIRECTORY && chmod a+x $DESTINATION_DIRECTORY/config_download.pl
 
