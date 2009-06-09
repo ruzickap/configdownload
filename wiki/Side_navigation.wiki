@@ -1,10 +1,7 @@
 #summary side navigation for the wiki
 #labels sidenavigation,wiki
 
-* [HomeOfconfig_download Main Wiki page]
-
-* [README README file]
-
-* [SampleXMLfile Examples]
-
-* [Screenshots Screenshots]
+    * [HomeOfconfig_download Main Wiki page]
+    * [README README file]
+    * [SampleXMLfile Examples]
+    * [Screenshots Screenshots]
