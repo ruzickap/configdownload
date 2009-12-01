@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 #Specify extra modules directory
 use FindBin;
@@ -26,7 +26,11 @@ $default_password="";
 $destination_directory=".";
 $my_output="***|";
 
-$default_cisco_telnet_timeout=$default_cisco_telnet_login_timeout=15;
+$default_telnet_timeout=10;
+$default_telnet_login_timeout=10;
+$default_telnet_prompt='[\$%#>] $';
+$default_cisco_telnet_timeout=15;
+$default_cisco_telnet_login_timeout=15;
 $default_cisco_telnet_prompt='(?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)';
 $default_cisco_telnet_enable_password="enable";
 $default_ssh_timeout=2;
@@ -87,30 +91,38 @@ foreach $section (sort keys %{$hosts}) {
     } else { die "$my_output Host (ip/hostname) is not specified in your XML!\n" }
     if (exists($$host_h->{"port"})) {
       $port=$$host_h->{"port"};
-    } elsif ($section =~ /cisco_telnet/) { $port=23; }
-        elsif ($section =~ /ssh/) { $port=22; }
-          elsif ($section =~ /http_file_get/) { $port=80; }
-            elsif ($section =~ /ftp_recursive_get/) { $port=21; }
+    } elsif (($section =~ /^telnet/) || ($section =~ /^cisco_telnet/)) { $port=23; }
+        elsif ($section =~ /^ssh/) { $port=22; }
+          elsif ($section =~ /^http_file_get/) { $port=80; }
+            elsif ($section =~ /^ftp_recursive_get/) { $port=21; }
               else { die "$my_output Can't determine default port for your section: \"$section\" and host: \"$host\"\n" }
     if (exists($$host_h->{"username"})) {
       $username=$$host_h->{"username"};
-    } else {
+    } elsif ($section !~ /^telnet/) {
         $username=$default_username;
-      }
+      } else { 
+          undef $username; 
+        }
+
     if (exists($$host_h->{"password"})) {
       $password=$$host_h->{"password"};
-    } else {
+    } elsif ($section !~ /^telnet/) {
         $password=$default_password;
-      }
+      } else {
+          undef $password;
+        }
+
     if (exists($$host_h->{"timeout"})) {
       $timeout=$$host_h->{"timeout"};
-    } elsif ($section =~ /cisco_telnet/) {
-        $timeout=$default_cisco_telnet_timeout;
-      } elsif ($section =~ /ssh/) {
-          $timeout=$default_ssh_timeout;
-        } elsif ($section =~ /ftp_recursive_get/) {
-            $timeout=$default_ftp_timeout;
-          }
+    } elsif ($section =~ /^telnet/) {
+        $timeout=$default_telnet_timeout;
+      } elsif ($section =~ /^cisco_telnet/) {
+          $timeout=$default_cisco_telnet_timeout;
+        } elsif ($section =~ /^ssh/) {
+            $timeout=$default_ssh_timeout;
+          } elsif ($section =~ /^ftp_recursive_get/) {
+              $timeout=$default_ftp_timeout;
+            }
     if (exists($$host_h->{"output_file"})) {
       $output_file=$$host_h->{"output_file"};
     } else {
@@ -118,25 +130,29 @@ foreach $section (sort keys %{$hosts}) {
       }
     if (exists($$host_h->{"prompt"})) {
       $prompt=$$host_h->{"prompt"};
-    } elsif ($section =~ /cisco_telnet/) {
-        $login_prompt=$prompt=$default_cisco_telnet_prompt;
-      } elsif ($section =~ /ssh/) {
-          $login_prompt=$prompt=$default_ssh_prompt;
-        } 
+    } elsif ($section =~ /^telnet/) {
+        $prompt=$default_telnet_prompt;
+      } elsif ($section =~ /^cisco_telnet/) {
+          $login_prompt=$prompt=$default_cisco_telnet_prompt;
+        } elsif ($section =~ /^ssh/) {
+            $login_prompt=$prompt=$default_ssh_prompt;
+          }
     if (exists($$host_h->{"login_prompt"})) {
       $login_prompt=$$host_h->{"login_prompt"};
     } elsif (not defined($login_prompt)) {
-        if ($section =~ /cisco_telnet/) {
+        if ($section =~ /^cisco_telnet/) {
           $login_prompt=$default_cisco_telnet_prompt;
-        } elsif ($section =~ /ssh/) {
+        } elsif ($section =~ /^ssh/) {
             $login_prompt=$default_ssh_login_prompt;
           }
       }
     if (exists($$host_h->{"login_timeout"})) {
       $login_timeout=$$host_h->{"login_timeout"};
-    } else {
+    } elsif ($section =~ /^cisco_telnet/) {
         $login_timeout=$default_cisco_telnet_login_timeout;
-      } 
+      } elsif ($section =~ /^telnet/) {
+          $login_timeout=$default_telnet_login_timeout;
+        }
     if (exists($$host_h->{"enable_password"})) {
       $enable_password=$$host_h->{"enable_password"};
     } else {
@@ -168,13 +184,66 @@ foreach $section (sort keys %{$hosts}) {
         $get_file=$default_http_file_get;
       }
 
-    print "\n$my_output [$count/" . (scalar keys %{$hosts->{$section}}) . "] $section $hostname $host:$port \n";
+    print "\n$my_output [$count/" . (scalar keys %{$hosts->{$section}}) . "] $section $hostname $host:$port ($username)\n";
+
+#
+# Telnet section
+#
+    if ($section =~ /^telnet/) {
+      $session = Net::Telnet->new(
+        Host => $host,
+        Port => $port,
+        Timeout => $timeout,
+        Input_log => $output_file,
+        Prompt => "/$prompt/",
+      );
+
+      if (defined($username) and defined($password)) {
+        $session->login(
+          "Name" => $username, 
+          "Password" => $password,
+          "Timeout" => $login_timeout,
+        ) or die "$my_output $session->errmsg";
+      }
+
+      #Command loop
+      foreach $command_h (@{$hosts->{$section}->{"commands_before"}},@{$$host_h->{"commands"}},@{$hosts->{$section}->{"commands_after"}}) {
+        #Set timeout or prompt if exists in command section or use default value
+        if ((exists($command_h->{"timeout"})) or (exists($command_h->{"prompt"}))) {
+          #command_h is hash like this one { 'timeout' => '1', 'content' => 'my_command...' },
+          $command=$command_h->{"content"};
+          if (exists($command_h->{"timeout"})) {
+            $timeout=$command_h->{"timeout"};
+          } else { 
+              $timeout=$default_telnet_timeout;
+            }
+          if (exists($command_h->{"prompt"})) {
+            $prompt=$command_h->{"prompt"};
+          } else { 
+              $prompt=$default_telnet_prompt;
+            }
+        } else {
+            #command_h is "string" here
+            $command=$command_h;
+            $timeout=$default_telnet_timeout;
+            $prompt=$default_telnet_prompt;
+          }
+        #Command execution
+        print "$my_output \"$command\" [$timeout]\n";
+        if ($debug) {
+          print $session->cmd(String => $command, Prompt => "/$prompt/", Timeout => $timeout);
+        } else { 
+            $session->cmd(String => $command, Prompt => "/$prompt/", Timeout => $timeout);
+          }
+      }
+      $session->close;
+    }
 
 #
 # Cisco section
 #
-    if ($section =~ /cisco_telnet/) {
-      my $session = Net::Telnet::Cisco->new(
+    if ($section =~ /^cisco_telnet/) {
+      $session = Net::Telnet::Cisco->new(
         Host => $host,
         Timeout => $timeout,
         Input_log => $output_file,
@@ -191,15 +260,15 @@ foreach $section (sort keys %{$hosts}) {
       #Command loop
       foreach $command (@{$hosts->{$section}->{"commands_before"}},@{$$host_h->{"commands"}},@{$hosts->{$section}->{"commands_after"}}) {
       #Enable section
-        if ($command =~ /^en.*/) {
-          print "$my_output $command [$timeout]\n";
+        if ($command =~ /^en/) {
+          print "$my_output \"$command\" [$timeout]\n";
           if (not $session->enable($enable_password)) {
             warn "$my_output Can't enable: " . $session->errmsg;
           } else { next; }
         }
         #Disable (is anybody using that?)
-        if ($command =~ /^disa.*/) { 
-          print "$my_output $command [$timeout]\n";
+        if ($command =~ /^disa/) { 
+          print "$my_output \"$command\" [$timeout]\n";
           if (not $session->disable) {
             warn "$my_output Can't disable: " . $session->errmsg;
           } else { next; }
@@ -210,7 +279,7 @@ foreach $section (sort keys %{$hosts}) {
           $command=$command->{"content"};
         } else { $timeout=$default_cisco_telnet_timeout; }
         #Command execution
-        print "$my_output $command [$timeout]\n";
+        print "$my_output \"$command\" [$timeout]\n";
         if ($debug) {
           print $session->cmd(String => $command, Timeout => $timeout);
         } else { 
@@ -223,7 +292,7 @@ foreach $section (sort keys %{$hosts}) {
 #
 # SSH section
 #
-    if ($section =~ /ssh/) {
+    if ($section =~ /^ssh/) {
       my $ssh = Net::SSH::Expect->new (
         host => $host,
         password => $password,
@@ -267,7 +336,7 @@ foreach $section (sort keys %{$hosts}) {
           }
 
         #Command execution
-        print "\n$my_output $command [$timeout]\n";
+        print "$my_output \"$command\" [$timeout]\n";
         $ssh_output=$ssh->exec($command,$timeout);
         if ($debug) {
           print $ssh_output;
@@ -284,8 +353,7 @@ foreach $section (sort keys %{$hosts}) {
 #
 # HTTP get section
 #
-
-    if ($section =~ /http_file_get/) {
+    if ($section =~ /^http_file_get/) {
       $http = new HTTP::Lite;
       $req = $http->request("http://$host:$port$get_file") or die "$my_output Unable to get document: $!";
       if ($req ne "200") { 
@@ -300,7 +368,7 @@ foreach $section (sort keys %{$hosts}) {
 #
 # Recursive FTP get section
 #
-    if ($section =~ /ftp_recursive_get/) {
+    if ($section =~ /^ftp_recursive_get/) {
       $ftp = Net::FTP::Recursive->new($host, Debug => $debug, Timeout => $timeout) or die "$my_output Can't connect to $host: $@";
       $ftp->login($username,$password) or die "$my_output Can't login ", $ftp->message;
       if (not -d $local_directory) { 

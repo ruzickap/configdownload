@@ -1,9 +1,9 @@
-*** Introduction to config_download ***
+= Introduction to config_download =
 
 config_download.pl is Perl script allowing downloading configs from various
 devices using standard protocols. It can run various commands on the devices
-and log their outputs. Currently ssh, cisco-telnet, ftp and http methods are
-supported.
+and log their outputs. Currently ssh, telnet, cisco-telnet, ftp and http 
+methods are supported.
 
 The script is written in Perl and depends on few external modules:
 
@@ -16,7 +16,7 @@ Before you will run the script please ensure you have these modules installed
 in your system.
 
 
-*** Installation ***
+== Installation ==
 
 Install all possible modules to your system using your package manager:
 
@@ -31,9 +31,9 @@ Install/build non-common modules from CPAN:
    perl -MCPAN -e 'install HTTP::Lite'
    perl -MCPAN -e 'install XML::Simple'
 
-or you can use compile it yourselves:
+You can also compile them yourselves:
 (You need to have gcc installed if you want to compile IO-Tty)
-(you should have libxml-simple-perl installed)
+(You should have libxml-simple-perl installed)
 
    DESTINATION_DIRECTORY="/tmp/config_download"
    mkdir -pv $DESTINATION_DIRECTORY/sources
@@ -48,45 +48,133 @@ or you can use compile it yourselves:
    wget http://configdownload.googlecode.com/svn/trunk/config_download.pl --directory-prefix=$DESTINATION_DIRECTORY && chmod a+x $DESTINATION_DIRECTORY/config_download.pl
 
 
-*** Basic configuration ***
+== Basic configuration ==
 The configuration is based on input XML file added as parameter to
 config_download.pl script.
 
-The script has following parameters:
+=== Command Line Arguments ===
 
-config_download.pl [--debug] [--destination=/my_path/]
+The script accepts following parameters:
+
+config_download.pl [--debug] [--destination=/my_path/] <CONFIG_FILE.XML>
 
 Options:
     -d, --[no]debug		enable debug mode, output from commands will be displayed
-    --destination=<file>	save all files to specified directory
+    --destination=<directory>	save all files to specified directory
 
 
-Here is the description of main section of XML input file:
+=== Description of Configuration XML file ===
 
-The configuration XML file is splitted into few sections:
+Config file should start and end with "configuration" element:
+
 <configuration>
+</configuration>
+
+You will specify the group sections between.
+
+
+==== Group sections ====
+
+You can specify the groups for devices administration.
+
+Currently supported:
+
+<configuration>
+  <telnet>...</telnet>                       - simple telnet communication
   <cisco_telnet>...</cisco_telnet>           - for interacting with cisco
                                                devices accessed through telnet
   <ssh>...</ssh>                             - for ssh interacted devices
-  <http_file_get>...</http_file_get>         - to get http configuration from
+  <http_file_get>...</http_file_get>         - get http configuration from
                                                device
-  <ftp_recursive_get>...</ftp_recursive_get> - to recursively transfer ftp
+  <ftp_recursive_get>...</ftp_recursive_get> - recursively transfer ftp
                                                directory from remote device
 </configuration>
 
-Every section contains additional parameters like login names, passwords,
+Every group section have to start with key words above. You can append
+what ever you want after key word:
+
+<configuration>
+  <telnet_123>...</telnet_123>
+  <ssh_machine1>...</ssh_machine1>
+</configuration>
+
+Every group section contain additional parameters like login names, passwords,
 files etc.
 
-There can be multiple sections, but should always contains names "ssh",
-"cisco_telnet"... For example <cisco_telnet_1> or <ssh_2>.
+Each section can contain <commands_before> and <commands_after> where you can
+specify commands to be executed. These commands are executed on all hosts
+defined for particular section and before/after commands specified in hosts sections.
 
-Every section can contain <commands_before> and <commands_after> where can be
-written commands to be executed. These commands are executed in all hosts
-defined for the hosts and before/after commands specified in hosts sections.
+<configuration>
+  <telnet>
+      <commands_before>ls -l /</commands_before>
+      <commands_before>df -h</commands_before>
+      <commands_after>uname -a</commands_after>
+    <test host="127.0.0.1" port="23" username="root" password="abcd">
+      <commands>uptime</commands>
+    </test>
+    <test2 host="127.0.0.1" port="23" username="root" password="abcd">
+      <commands>hostname</commands>
+    </test2>
+  </telnet>
+</configuration>
+
+This example ilustrate telnet connection with authentication.
+Commands are executed in this order for "test1": ls -l; df -h; uptime; uname -a
+
+For "test2" the order is following: ls -l; df -h; hostname; uname -a
+
+==== Host sections ====
+
+Host sections define what will be executed after succesfull connection/login.
+
+Every hostname (test0rt02) section can contain commands which will be
+executed and you can also specify timeout for them:
+
+<commands timeout=1>show ip route 192.168.0.1</commands>
 
 
-** Cisco telnet interaction **
-Here is a example of XML section for Cisco:
+
+
+
+
+
+
+
+===== Telnet interaction =====
+If you want to use simple telnet connection please look at this example:
+
+<configuration>
+  <telnet>
+      <commands_before>ALLIP;</commands_before> <!-- Alarm List PrintReset -->
+      <commands_before>STSLP;</commands_before> <!-- Status Signalling Link Print -->
+    <sg01 host="127.0.0.1" port="8100" login_timeout="1" timeout="1" output_log="./sg02.log" prompt="&lt;">
+    </sg01>
+  </telnet>
+</configuration>
+
+The example above showing access without login by telnet. It just connect to the port 8100, 
+send two commands and ends. After very command the "<" prompt is required.
+(If you want to use login/password please use username="admin" password="12345" values)
+
+  * Possible Host Section Values
+
+host (mandatory) - IP or hostname of device you are connecting to
+port             - port (default: 23)
+username         - login name
+password         - password for login
+timeout          - specifies how long can command run before it goes back to
+                   "prompt". If command run longer than the "timeout value" you
+                   will get error
+prompt           - how looks default prompt after executing the commands 
+                   (by default it is: /[\$%#>] $/)
+output_file      - defines output log where the whole interaction is stored
+                   (default it's <hostname>-<ip>.log)
+login_timeout    - specifies how much time can take login procedure
+                   (default 15 seconds)
+
+===== Cisco telnet interaction =====
+Here is the example for Cisco:
 
 <configuration>
   <cisco_telnet>
@@ -105,26 +193,19 @@ Here is a example of XML section for Cisco:
 </configuration>
 
 You can see 2 hosts defined in this section: test0rt01, test0rt02. For
-every host you can specify connection details, timeouts, log and prompt.
+every host you can specify "default" connection details described in telnet section 
+(host, port, username, password, timeout, prompt, output_file, login_timeout) and
+few more:
 
-host,username,password,enable_password
-login_timout - specifies how much time can take login procedure
-               (default 15 seconds)
+enable_password
+
 login_prompt - defines how should look prompt after successful login 
-               (by default it's cisco standard prompt)
-output_file  - defines output log where the whole interaction is stored
-               (default it's <hostname>-<ip>.log)
-port         - port (default: 23)
-prompt       - how looks default prompt after executing the commands 
-               (by default it's cisco standard prompt)
+               by default it's cisco standard prompt: (?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)
+prompt       - by default it's cisco standard prompt
 
 Every hostname (test0rt02) section can contain commands which will be
 executed and you can also specify timeout for them:
 <commands timeout=1>show ip route 192.168.0.1</commands>
-
-timeout      - specifies how long can command run before it goes back to
-               "prompt". If command run longer than the "timeout value" you
-               will get error.
 
 
 ** SSH interaction **
@@ -199,6 +280,8 @@ local_directory  - local directory where the data will be stored (default: ".")
 password         - password (default: <empty>)
 remote_directory - remote directory on the FTP server (default: ".")
 username         - login (default: anonymous)
+
+
 
 
 *** Author, version, license information ***
