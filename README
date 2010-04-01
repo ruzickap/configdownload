@@ -53,7 +53,7 @@ You can also compile them yourselves:
 The configuration is based on input XML file added as parameter to
 config_download.pl script.
 
-=== Command Line Arguments ===
+== Command Line Arguments ==
 
 The script accepts following parameters:
 
@@ -64,7 +64,7 @@ Options:
     --destination=<directory>	save all files to specified directory
 
 
-=== Description of Configuration XML file ===
+== Description of Configuration XML file ==
 
 Config file should start and end with "configuration" element:
 
@@ -74,7 +74,7 @@ Config file should start and end with "configuration" element:
 You will specify the group sections between.
 
 
-==== Group sections ====
+=== Group sections ===
 
 You can specify the groups for devices administration.
 
@@ -145,7 +145,7 @@ after one second. Otherwise you will get error.
 (I'm using this example for ssh only enabled switches.)
 
 
-==== Host sections ====
+=== Host sections ===
 
 Host sections define what will be executed after successful connection/login.
 
@@ -158,7 +158,7 @@ This will execute "show version" command which should be completed before 1
 sec.
 
 
-===== Telnet interaction =====
+=== Telnet interaction ===
 If you want to use simple telnet connection please look at this example:
 
 <configuration>
@@ -192,7 +192,7 @@ login_timeout    - specifies how much time can take login procedure
                    (default 15 seconds)
 
 
-===== Cisco telnet interaction =====
+=== Cisco telnet interaction ===
 Here is the Cisco example:
 
 <configuration>
@@ -222,7 +222,7 @@ login_prompt     - defines how should look prompt after successful login
 prompt           - by default it is cisco standard prompt
 
 
-===== SSH interaction =====
+=== SSH interaction ===
 
 SSH Example:
 
@@ -254,7 +254,7 @@ timeout          - default timeout for all commands, if the expected prompt is
                    not there before timeout value you will get error
 
 
-===== HTTP file get =====
+=== HTTP file get ===
 
 HTTP file get method can download defined file from HTTP server.
 
@@ -273,7 +273,7 @@ output_file      - destination file where the downloaded file should be stored
 port             - service port (80 by default)
 
 
-===== FTP recursive download =====
+=== FTP recursive download ===
 
 If you need to recursively download files/directories from the FTP server use
 this method.
