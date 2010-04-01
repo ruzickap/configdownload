@@ -187,7 +187,7 @@ timeout          - specifies how long can command run before it goes back to
 prompt           - how looks default prompt after executing the commands
                    (by default it is: /[\$%#>] $/)
 output_file      - defines output log where the whole interaction is stored
-                   (default it's <hostname>-<ip>.log)
+                   (default it is <hostname>-<ip>.log)
 login_timeout    - specifies how much time can take login procedure
                    (default 15 seconds)
 
@@ -218,8 +218,8 @@ and few more:
 
 enable_password  - password used for switching to enable mode
 login_prompt     - defines how should look prompt after successful login
-                   by default it's cisco standard prompt: (?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)
-prompt           - by default it's cisco standard prompt
+                   by default it is cisco standard prompt: (?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)
+prompt           - by default it is cisco standard prompt
 
 
 ===== SSH interaction =====
@@ -244,7 +244,7 @@ password. You can also set few extra parameters:
 login_prompt     - shows how the login prompt should look like in regular
                    expression after successful login (by default: .*)
 output_file      - defines output log where the whole interaction is stored
-                   (default it's <hostname>-<ip>.log)
+                   (default it is <hostname>-<ip>.log)
 password_prompt  - like login_promt set how password prompt looks like
                    (by default: [Pp]assword.*?:|[Pp]assphrase.*?:)
 prompt           - is a default prompt used by device (by default: .*)
