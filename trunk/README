@@ -2,12 +2,12 @@
 
 config_download.pl is Perl script allowing downloading configs from various
 devices using standard protocols. It can run various commands on the devices
-and log their outputs. Currently ssh, telnet, cisco-telnet, ftp and http 
+and log their outputs. Currently ssh, telnet, cisco-telnet, ftp and http
 methods are supported.
 
 The script is written in Perl and depends on few external modules:
 
-Net-Telnet-Cisco -> Net::Telnet 
+Net-Telnet-Cisco -> Net::Telnet
 Net-SSH-Expect -> Expect -> IO::Pty
 Net-FTP-Recursive
 HTTP::Lite
@@ -49,6 +49,7 @@ You can also compile them yourselves:
 
 
 == Basic configuration ==
+
 The configuration is based on input XML file added as parameter to
 config_download.pl script.
 
@@ -90,8 +91,8 @@ Currently supported:
                                                directory from remote device
 </configuration>
 
-Every group section have to start with key words above. You can append
-what ever you want after key word:
+Every group section have to start with key words above. You can append what
+ever you want after key word:
 
 <configuration>
   <telnet_123>...</telnet_123>
@@ -102,8 +103,9 @@ Every group section contain additional parameters like login names, passwords,
 files etc.
 
 Each section can contain <commands_before> and <commands_after> where you can
-specify commands to be executed. These commands are executed on all hosts
-defined for particular section and before/after commands specified in hosts sections.
+specify commands to be executed before/after "normal" commands. These commands
+are executed on all hosts defined for particular section and before/after
+commands specified in hosts sections.
 
 <configuration>
   <telnet>
@@ -119,26 +121,41 @@ defined for particular section and before/after commands specified in hosts sect
   </telnet>
 </configuration>
 
-This example ilustrate telnet connection with authentication.
-Commands are executed in this order for "test1": ls -l; df -h; uptime; uname -a
+This example illustrate telnet connection with authentication. Commands are
+executed in this order for "test1":
 
-For "test2" the order is following: ls -l; df -h; hostname; uname -a
+ * ls -l
+ * df -h
+ * uptime
+ * uname -a
+
+The command order for "test2" is:
+
+ * ls -l
+ * df -h
+ * hostname
+ * uname -a
+
+Command sections can also contain timeout and expected prompt parameters:
+
+<commands_before timeout="1" prompt='\s*[Pp]assword:\s*'>enable</commands_before>
+
+It means, that after command "enable" there should appear "Password prompt"
+after one second. Otherwise you will get error.
+(I'm using this example for ssh only enabled switches.)
+
 
 ==== Host sections ====
 
-Host sections define what will be executed after succesfull connection/login.
+Host sections define what will be executed after successful connection/login.
 
-Every hostname (test0rt02) section can contain commands which will be
-executed and you can also specify timeout for them:
+Every hostname (test0rt02) section can contain commands which will be executed
+and you can also specify their timeouts and prompts:
 
-<commands timeout=1>show ip route 192.168.0.1</commands>
+<commands timeout=1>show version</commands>
 
-
-
-
-
-
-
+This will execute "show version" command which should be completed before 1
+sec.
 
 
 ===== Telnet interaction =====
@@ -153,8 +170,9 @@ If you want to use simple telnet connection please look at this example:
   </telnet>
 </configuration>
 
-The example above showing access without login by telnet. It just connect to the port 8100, 
-send two commands and ends. After very command the "<" prompt is required.
+The example above showing access without login by telnet. It just connect to
+the port 8100, send two commands and ends. After very command the "<" prompt
+needs to be displayed.
 (If you want to use login/password please use username="admin" password="12345" values)
 
   * Possible Host Section Values
@@ -166,15 +184,16 @@ password         - password for login
 timeout          - specifies how long can command run before it goes back to
                    "prompt". If command run longer than the "timeout value" you
                    will get error
-prompt           - how looks default prompt after executing the commands 
+prompt           - how looks default prompt after executing the commands
                    (by default it is: /[\$%#>] $/)
 output_file      - defines output log where the whole interaction is stored
                    (default it's <hostname>-<ip>.log)
 login_timeout    - specifies how much time can take login procedure
                    (default 15 seconds)
 
+
 ===== Cisco telnet interaction =====
-Here is the example for Cisco:
+Here is the Cisco example:
 
 <configuration>
   <cisco_telnet>
@@ -192,25 +211,20 @@ Here is the example for Cisco:
   </cisco_telnet>
 </configuration>
 
-You can see 2 hosts defined in this section: test0rt01, test0rt02. For
-every host you can specify "default" connection details described in telnet section 
-(host, port, username, password, timeout, prompt, output_file, login_timeout) and
-few more:
+You can see 2 hosts defined in this section: test0rt01, test0rt02. For every
+host you can specify "default" connection details described in telnet section
+(host, port, username, password, timeout, prompt, output_file, login_timeout)
+and few more:
 
-enable_password
-
-login_prompt - defines how should look prompt after successful login 
-               by default it's cisco standard prompt: (?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)
-prompt       - by default it's cisco standard prompt
-
-Every hostname (test0rt02) section can contain commands which will be
-executed and you can also specify timeout for them:
-<commands timeout=1>show ip route 192.168.0.1</commands>
+enable_password  - password used for switching to enable mode
+login_prompt     - defines how should look prompt after successful login
+                   by default it's cisco standard prompt: (?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)
+prompt           - by default it's cisco standard prompt
 
 
-** SSH interaction **
+===== SSH interaction =====
 
-Example of SSH:
+SSH Example:
 
 <configuration>
   <ssh>
@@ -220,30 +234,27 @@ Example of SSH:
       <commands>my_enable_password</commands>
       <commands>terminal length 0</commands>
       <commands>show version</commands>
+    </switch04>
   </ssh>
 </configuration>
 
 Like in previous example, you have to specify host, port, username and
-password. You can also set few parameters like timeout, log_file, ssh_options,
-login_prompot, password_prompt and prompt.
+password. You can also set few extra parameters:
 
-login_prompt    - shows how the login prompt should look like in regular
-                  expression after successful login (by default: .*)
-output_file     - defines output log where the whole interaction is stored
-                  (default it's <hostname>-<ip>.log)
-password_prompt - like login_promt set how password prompt looks like 
-                  (by default: [Pp]assword.*?:|[Pp]assphrase.*?:)
-prompt          - is a default prompt used by device (by default: .*)
-ssh_options     - contain list of parameters used when script is calling ssh
-                  command (none by default)
-timeout         - default timeout for all commands, if the expected prompt is
-                  not there before timeout value you will get error
-
-Every command section can specify "timeout" and "prompt":
-<commands prompt=".*password:\s*" timeout="1" >configupload -all -scp 192.168.0.16,root,/tftpboot/test0sa01.cfg</commands>
+login_prompt     - shows how the login prompt should look like in regular
+                   expression after successful login (by default: .*)
+output_file      - defines output log where the whole interaction is stored
+                   (default it's <hostname>-<ip>.log)
+password_prompt  - like login_promt set how password prompt looks like
+                   (by default: [Pp]assword.*?:|[Pp]assphrase.*?:)
+prompt           - is a default prompt used by device (by default: .*)
+ssh_options      - contain list of parameters used when script is calling ssh
+                   command (none by default)
+timeout          - default timeout for all commands, if the expected prompt is
+                   not there before timeout value you will get error
 
 
-** HTTP file get **
+===== HTTP file get =====
 
 HTTP file get method can download defined file from HTTP server.
 
@@ -256,13 +267,13 @@ HTTP file get method can download defined file from HTTP server.
 
 You can specify:
 
-get_file    - specify file which should be downloaded from the server
-host        - IP/hostname of the server
-output_file - destination file where the downloaded file should be stored
-port        - service port (80 by default)
+get_file         - specify file which should be downloaded from the server
+host             - IP/hostname of the server
+output_file      - destination file where the downloaded file should be stored
+port             - service port (80 by default)
 
 
-** FTP recursive download **
+===== FTP recursive download =====
 
 If you need to recursively download files/directories from the FTP server use
 this method.
@@ -280,7 +291,6 @@ local_directory  - local directory where the data will be stored (default: ".")
 password         - password (default: <empty>)
 remote_directory - remote directory on the FTP server (default: ".")
 username         - login (default: anonymous)
-
 
 
 
