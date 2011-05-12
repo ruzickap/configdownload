@@ -19,6 +19,7 @@ use XML::Simple;
 use Cwd;
 use Getopt::Long;
 use Data::Dumper;
+use FileHandle;
 
 #Default variables
 $default_username="anonymous";
