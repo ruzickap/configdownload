@@ -19,7 +19,6 @@ use XML::Simple;
 use Cwd;
 use Getopt::Long;
 use Data::Dumper;
-use FileHandle;
 
 #Default variables
 $default_username="anonymous";
@@ -301,6 +300,7 @@ foreach $section (sort keys %{$hosts}) {
         timeout => $timeout,
         log_file => $output_file,
         raw_pty => 1,
+        ssh_option = $ssh_options,
       );
 
       my $login_output = $ssh->login();
