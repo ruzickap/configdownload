@@ -33,7 +33,7 @@ $default_cisco_telnet_timeout=15;
 $default_cisco_telnet_login_timeout=15;
 $default_cisco_telnet_prompt='(?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)';
 $default_cisco_telnet_enable_password="enable";
-$default_ssh_timeout=2;
+$default_ssh_timeout=3;
 $default_ssh_options='-v -x';
 $default_ssh_login_prompt='.*';
 $default_ssh_password_prompt='[Pp]assword.*?:|[Pp]assphrase.*?:';
@@ -300,7 +300,7 @@ foreach $section (sort keys %{$hosts}) {
         timeout => $timeout,
         log_file => $output_file,
         raw_pty => 1,
-        ssh_option = $ssh_options,
+        ssh_option => $ssh_options,
       );
 
       my $login_output = $ssh->login();
