@@ -26,15 +26,15 @@ $default_password="";
 $destination_directory=".";
 $my_output="***|";
 
-$default_telnet_timeout=10;
+$default_telnet_timeout=15;
 $default_telnet_login_timeout=10;
 $default_telnet_prompt='[\$%#>] $';
-$default_cisco_telnet_timeout=15;
+$default_cisco_telnet_timeout=20;
 $default_cisco_telnet_login_timeout=15;
 $default_cisco_telnet_prompt='(?m:^\s*[\w.-]+\s?(?:\(config[^\)]*\))?\s?[\$#>]\s?(?:\(enable\))?\s*$)';
 $default_cisco_telnet_enable_password="enable";
-$default_ssh_timeout=3;
-$default_ssh_options='-v -x';
+$default_ssh_timeout=4;
+$default_ssh_options='-v -x -o UserKnownHostsFile=/dev/null -o HostKeyAlgorithms=ssh-rsa,ssh-dss -o StrictHostKeyChecking=no -o PubkeyAuthentication=no';
 $default_ssh_login_prompt='.*';
 $default_ssh_password_prompt='[Pp]assword.*?:|[Pp]assphrase.*?:';
 $default_ssh_prompt='.*';
@@ -184,7 +184,7 @@ foreach $section (sort keys %{$hosts}) {
         $get_file=$default_http_file_get;
       }
 
-    print "\n$my_output [$count/" . (scalar keys %{$hosts->{$section}}) . "] $section $hostname $host:$port ($username)\n";
+    print "\n$my_output [$count/" . (scalar keys %{$hosts->{$section}}) . "] $section $hostname $host:$port ($username) [$timeout]\n";
 
 #
 # Telnet section
