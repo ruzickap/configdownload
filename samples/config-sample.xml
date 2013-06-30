@@ -110,6 +110,7 @@
   <ssh_sa>
     <commands_before>wwn</commands_before>
     <commands_before>switchshow</commands_before>
+    <commands_before>licenseport --show</commands_before>
     <commands_before>licenseidshow</commands_before>
     <commands_before>cfgshow</commands_before>
     <commands_before>sensorshow</commands_before>
