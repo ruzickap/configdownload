@@ -73,7 +73,7 @@ $0 my_config_file.xml --debug --destination=/tmp
 $hosts = XMLin($ARGV[0], ForceArray => [qw(commands commands_before commands_after)]);
 
 #Show imported XML structure from file 
-if ($debug) { print Dumper $hosts; }
+if ($debug) { print Dumper sort $hosts; }
 
 #Get sections from hash (/cisco_telnet/, /ssh/, /ftp_recursive_get/, /http_file_get/)
 foreach $section (sort keys %{$hosts}) {
@@ -81,7 +81,7 @@ foreach $section (sort keys %{$hosts}) {
   #Get hostnames/IPs from section
   foreach $hostname (sort keys %{$hosts->{$section}}) {
     #Skip after/before commands
-    if (($hostname eq "commands_after") or ($hostname eq "commands_before")) { next; }
+    if (($hostname eq "commands_after") or ($hostname eq "commands_before") or ($hostname eq "commands")) { next; }
     $count++;
     $host_h=\$hosts->{$section}->{$hostname};
 
