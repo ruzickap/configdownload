@@ -1,0 +1,469 @@
+{
+  "kind" : "projecthosting#user",
+  "id" : "@UxlRRFFTAhJHWQd0",
+  "projects" : [ {
+    "kind" : "projecthosting#project",
+    "name" : "configdownload",
+    "externalId" : "configdownload",
+    "htmlLink" : "/p/configdownload/",
+    "summary" : "config_download is Perl script allowing downloading configs from various devices using standard protocols like ssh, telnet, ftp, http.",
+    "description" : "= Introduction to config_download.pl script =\r\n\r\nconfig_download.pl is Perl script allowing downloading configs from various devices using standard protocols. It can run various commands on the devices and log their outputs. Currently ssh, telnet, cisco-telnet, ftp and http methods are supported.\r\n\r\nThe script is written in Perl and depends on few external modules:\r\n\r\n  * [http://search.cpan.org/dist/Net-Telnet-Cisco/ Net-Telnet-Cisco] -> [http://search.cpan.org/~jrogers/Net-Telnet/ Net::Telnet]\r\n  * [http://search.cpan.org/~bnegrao/Net-SSH-Expect/ Net-SSH-Expect] -> [http://search.cpan.org/~rgiersig/Expect/ Expect] -> [http://search.cpan.org/~rgiersig/IO-Tty/ IO::Pty]\r\n  * [http://search.cpan.org/~jdlee/Net-FTP-Recursive/ Net-FTP-Recursive]\r\n  * [http://search.cpan.org/~rhooper/HTTP-Lite/ HTTP::Lite]\r\n\r\nBefore you will run the script please ensure you have these modules installed in your system.\r\n\r\n= News =\r\n\r\n * config_download.pl (version 0.1) has been released 2009.06.07\r\n\r\n= Installation =\r\nInstall all possible modules to your system using your package manager:\r\n\r\n{{{\r\n aptitude install libnet-telnet-cisco-perl libexpect-perl libxml-simple-perl\r\n}}}\r\n\r\nInstall/build non-common modules from [http://www.cpan.org/ CPAN]:\r\n\r\n{{{\r\n   perl -MCPAN -e 'install IO::Tty'\r\n   perl -MCPAN -e 'install Net::Telnet::Cisco'\r\n   perl -MCPAN -e 'install Net::SSH::Expect'  \r\n   perl -MCPAN -e 'install Net::FTP::Recursive'\r\n   perl -MCPAN -e 'install HTTP::Lite'         \r\n   perl -MCPAN -e 'install XML::Simple'        \r\n}}}\r\n\r\nYou can also compile them yourselves:\r\n\r\n(You need to have gcc installed if you want to compile [http://search.cpan.org/~rgiersig/IO-Tty/ IO-Tty])\r\n\r\n(You should have libxml-simple-perl installed)\r\n\r\n{{{\r\n   DESTINATION_DIRECTORY=\"/tmp/config_download\"\r\n   mkdir -pv $DESTINATION_DIRECTORY/sources    \r\n   wget http://search.cpan.org/CPAN/authors/id/R/RG/RGIERSIG/IO-Tty-1.08.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources\r\n   wget http://search.cpan.org/CPAN/authors/id/J/JR/JROGERS/Net-Telnet-3.03.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources\r\n   wget http://search.cpan.org/CPAN/authors/id/J/JO/JOSHUA/Net-Telnet-Cisco-1.10.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources\r\n   wget http://search.cpan.org/CPAN/authors/id/R/RG/RGIERSIG/Expect-1.21.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources        \r\n   wget http://search.cpan.org/CPAN/authors/id/B/BN/BNEGRAO/Net-SSH-Expect-1.09.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources \r\n   wget http://search.cpan.org/CPAN/authors/id/J/JD/JDLEE/Net-FTP-Recursive-2.04.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources\r\n   wget http://search.cpan.org/CPAN/authors/id/R/RH/RHOOPER/HTTP-Lite-2.1.6.tar.gz -O - | tar -xvzf - -C $DESTINATION_DIRECTORY/sources     \r\n   for DIR in $DESTINATION_DIRECTORY/sources/*; do cd $DIR && perl Makefile.PL PREFIX=$DESTINATION_DIRECTORY`perl -MConfig -e 'print $Config{\"siteprefix\"}'` && make && make install && cd ..; done                                                                                                                       \r\n   wget http://configdownload.googlecode.com/svn/trunk/config_download.pl --directory-prefix=$DESTINATION_DIRECTORY && chmod a+x $DESTINATION_DIRECTORY/config_download.pl\r\n}}}\r\n\r\n== Download ==\r\n\r\nYou can download the recent version here:\r\n\r\nhttp://code.google.com/p/configdownload/downloads/list\r\n\r\nYou can get latest version from SVN: \r\n\r\n{{{\r\nsvn checkout http://configdownload.googlecode.com/svn/trunk/ configdownload-read-only\r\n}}}\r\n\r\n(Don't forget to download/install required Perl modules otherwise the script will not work)\r\n\r\n= Documentation =\r\n\r\nPlease check the [HomeOfconfig_download Wiki] for more information and [SampleXMLfile examples].\r\n\r\n\r\n= Author, version, license information =\r\n\r\nLicense: [http://www.gnu.org/licenses/gpl-3.0-standalone.html GNU General Public License Version 3]\r\n\r\nPlatforms: All (Linux, NT, BSD, Solaris and other UNIX's, BeOS, OS/2...)\r\n\r\nAuthor: Petr Ruzicka <petr.ruzicka@gmail.com>\r\n\r\nLatest version: http://configdownload.googlecode.com/",
+    "labels" : [ "configuration", "download", "perl", "ssh", "telnet", "cisco", "ftp", "http" ],
+    "versionControlSystem" : "svn",
+    "repositoryUrls" : [ "https://configdownload.googlecode.com/svn/" ],
+    "issuesConfig" : {
+      "kind" : "projecthosting#projectIssueConfig",
+      "defaultColumns" : [ "" ],
+      "defaultSorting" : [ "" ],
+      "statuses" : [ {
+        "status" : "New",
+        "meansOpen" : true,
+        "description" : "Issue has not had initial review yet"
+      }, {
+        "status" : "Accepted",
+        "meansOpen" : true,
+        "description" : "Problem reproduced / Need acknowledged"
+      }, {
+        "status" : "Started",
+        "meansOpen" : true,
+        "description" : "Work on this issue has begun"
+      }, {
+        "status" : "Fixed",
+        "meansOpen" : false,
+        "description" : "Developer made source code changes, QA should verify"
+      }, {
+        "status" : "Verified",
+        "meansOpen" : false,
+        "description" : "QA has verified that the fix worked"
+      }, {
+        "status" : "Invalid",
+        "meansOpen" : false,
+        "description" : "This was not a valid issue report"
+      }, {
+        "status" : "Duplicate",
+        "meansOpen" : false,
+        "description" : "This report duplicates an existing issue"
+      }, {
+        "status" : "WontFix",
+        "meansOpen" : false,
+        "description" : "We decided to not take action on this issue"
+      }, {
+        "status" : "Done",
+        "meansOpen" : false,
+        "description" : "The requested non-coding task was completed"
+      } ],
+      "labels" : [ {
+        "label" : "Type-Defect",
+        "description" : "Report of a software defect"
+      }, {
+        "label" : "Type-Enhancement",
+        "description" : "Request for enhancement"
+      }, {
+        "label" : "Type-Task",
+        "description" : "Work item that doesn't change the code or docs"
+      }, {
+        "label" : "Type-Review",
+        "description" : "Request for a source code review"
+      }, {
+        "label" : "Type-Other",
+        "description" : "Some other kind of issue"
+      }, {
+        "label" : "Priority-Critical",
+        "description" : "Must resolve in the specified milestone"
+      }, {
+        "label" : "Priority-High",
+        "description" : "Strongly want to resolve in the specified milestone"
+      }, {
+        "label" : "Priority-Medium",
+        "description" : "Normal priority"
+      }, {
+        "label" : "Priority-Low",
+        "description" : "Might slip to later milestone"
+      }, {
+        "label" : "OpSys-All",
+        "description" : "Affects all operating systems"
+      }, {
+        "label" : "OpSys-Windows",
+        "description" : "Affects Windows users"
+      }, {
+        "label" : "OpSys-Linux",
+        "description" : "Affects Linux users"
+      }, {
+        "label" : "OpSys-OSX",
+        "description" : "Affects Mac OS X users"
+      }, {
+        "label" : "Milestone-Release1.0",
+        "description" : "All essential functionality working"
+      }, {
+        "label" : "Component-UI",
+        "description" : "Issue relates to program UI"
+      }, {
+        "label" : "Component-Logic",
+        "description" : "Issue relates to application logic"
+      }, {
+        "label" : "Component-Persistence",
+        "description" : "Issue relates to data storage components"
+      }, {
+        "label" : "Component-Scripts",
+        "description" : "Utility and installation scripts"
+      }, {
+        "label" : "Component-Docs",
+        "description" : "Issue relates to end-user documentation"
+      }, {
+        "label" : "Security",
+        "description" : "Security risk to users"
+      }, {
+        "label" : "Performance",
+        "description" : "Performance issue"
+      }, {
+        "label" : "Usability",
+        "description" : "Affects program usability"
+      }, {
+        "label" : "Maintainability",
+        "description" : "Hinders future changes"
+      } ],
+      "prompts" : [ {
+        "name" : "Defect report from user",
+        "title" : "Enter one-line summary",
+        "description" : "What steps will reproduce the problem?\n1.\n2.\n3.\n\nWhat is the expected output? What do you see instead?\n\n\nWhat version of the product are you using? On what operating system?\n\n\nPlease provide any additional information below.",
+        "titleMustBeEdited" : true,
+        "status" : "New",
+        "labels" : [ "Type-Defect", "Priority-Medium" ]
+      }, {
+        "name" : "Defect report from developer",
+        "title" : "Enter one-line summary",
+        "description" : "What steps will reproduce the problem?\n1.\n2.\n3.\n\nWhat is the expected output? What do you see instead?\n\n\nPlease use labels and text to provide additional information.",
+        "titleMustBeEdited" : true,
+        "status" : "Accepted",
+        "labels" : [ "Type-Defect", "Priority-Medium" ],
+        "membersOnly" : true
+      }, {
+        "name" : "Review request",
+        "title" : "Code review request",
+        "description" : "Purpose of code changes on this branch:\n\n\nWhen reviewing my code changes, please focus on:\n\n\nAfter the review, I'll merge this branch into:\n/trunk",
+        "status" : "New",
+        "labels" : [ "Type-Review", "Priority-Medium" ],
+        "membersOnly" : true
+      } ],
+      "defaultPromptForMembers" : 1,
+      "defaultPromptForNonMembers" : 0
+    },
+    "role" : "owner",
+    "members" : [ {
+      "kind" : "projecthosting#issuePerson",
+      "name" : "petr.ruzicka",
+      "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+    } ],
+    "issues" : {
+      "kind" : "projecthosting#issueList",
+      "totalResults" : 3,
+      "items" : [ {
+        "kind" : "projecthosting#issue",
+        "id" : 1,
+        "title" : "Youtube video is private, and now vieweble to public",
+        "summary" : "Youtube video is private, and now vieweble to public",
+        "stars" : 1,
+        "starred" : false,
+        "status" : "Done",
+        "state" : "closed",
+        "labels" : [ "Type-Defect", "Priority-Medium" ],
+        "author" : {
+          "kind" : "projecthosting#issuePerson",
+          "name" : "clysel",
+          "htmlLink" : "https://code.google.com/u/108460458991825154003/"
+        },
+        "updated" : "2010-02-02T08:03:34.000Z",
+        "published" : "2010-02-01T21:20:14.000Z",
+        "closed" : "2010-02-02T08:03:34.000Z",
+        "projectId" : "configdownload",
+        "canComment" : true,
+        "canEdit" : true,
+        "comments" : {
+          "kind" : "projecthosting#issueCommentList",
+          "totalResults" : 4,
+          "items" : [ {
+            "id" : 0,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "clysel",
+              "htmlLink" : "https://code.google.com/u/108460458991825154003/"
+            },
+            "content" : "<b>What steps will reproduce the problem?</b>\n1. Go to http://code.google.com/p/configdownload/wiki/Screenshots#Video\r\n2. Play video\r\n3. Error message appear, &quot;This is a private video&quot;\r\n\r\n<b>What is the expected output? What do you see instead?</b>\n\r\nI would like to see the video :)\r\n\r\n\r\n<b>What version of the product are you using? On what operating system?</b>\n\r\n\r\n<b>Please provide any additional information below.</b>\n",
+            "published" : "2010-02-01T21:20:14.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 1,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "It should be fine now...\r\n\r\nSorry...",
+            "published" : "2010-02-02T08:00:56.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 2,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "Fixed...",
+            "published" : "2010-02-02T08:03:34.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate",
+              "status" : "Done"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 3,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "clysel",
+              "htmlLink" : "https://code.google.com/u/108460458991825154003/"
+            },
+            "content" : "Thanks, works great ... by the way ... great project :)",
+            "published" : "2010-02-02T08:03:44.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          } ]
+        }
+      }, {
+        "kind" : "projecthosting#issue",
+        "id" : 2,
+        "title" : "Issues on config_download-0.2",
+        "summary" : "Issues on config_download-0.2",
+        "stars" : 1,
+        "starred" : false,
+        "status" : "Fixed",
+        "state" : "closed",
+        "labels" : [ "Type-Defect", "Priority-High", "OpSys-All", "Usability", "Component-Scripts" ],
+        "author" : {
+          "kind" : "projecthosting#issuePerson",
+          "name" : "anthohjy",
+          "htmlLink" : "https://code.google.com/u/106966568905529618214/"
+        },
+        "owner" : {
+          "kind" : "projecthosting#issuePerson",
+          "name" : "petr.ruzicka",
+          "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+        },
+        "updated" : "2011-10-25T07:05:01.000Z",
+        "published" : "2011-05-07T18:50:49.000Z",
+        "closed" : "2011-10-25T07:05:01.000Z",
+        "projectId" : "configdownload",
+        "canComment" : true,
+        "canEdit" : true,
+        "comments" : {
+          "kind" : "projecthosting#issueCommentList",
+          "totalResults" : 6,
+          "items" : [ {
+            "id" : 0,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "anthohjy",
+              "htmlLink" : "https://code.google.com/u/106966568905529618214/"
+            },
+            "content" : "<b>What steps will reproduce the problem?</b>\n1.When executing the ./config_download.pl\r\n2.When executing the ./config_download.pl with parameters\r\n\r\n<b>What is the expected output? What do you see instead?</b>\nOutput 1:\r\n# ./config_download.pl\r\nUse of /g modifier is meaningless in split at /usr/local/share/perl/5.10.0/Net/Telnet/Cisco.pm line 756.\r\n\r\nconfig_download.pl is a Perl script used for getting/downloading configurations from various devices.\r\n\r\nCurrently following protocols are supported:\r\nCisco telnet, SSH, HTTP file get, FTP recursive copy\r\n\r\nPlease see example XML file in sample directory to find more information how to create it.\r\n\r\nconfig_download.pl [--debug] [--destination=/my_path/]\r\n\r\nOptions:\r\n    -d, --[no]debug             enable debug mode, output from commands will be displayed\r\n    --destination=&lt;file&gt;        save all files to specified directory\r\n\r\nExample:\r\n\r\n./config_download.pl my_config_file.xml --debug --destination=/tmp\r\n\r\n\r\nOutput 2:\r\n# ./config_download.pl ./itsb-router.xml -d\r\nUse of /g modifier is meaningless in split at /usr/local/share/perl/5.10.0/Net/Telnet/Cisco.pm line 756.\r\nCan't locate object method &quot;read&quot; via package &quot;FileHandle&quot; at /usr/local/lib/perl/5.10.0/XML/Parser/Expat.pm line 469.\r\n\r\n\r\n<b>What version of the product are you using? On what operating system?</b>\nDebian Linux 5.0.8\r\n\r\n<b>Please provide any additional information below.</b>\nModules:\r\nIO-Tty-1.10\r\nHTTP-Lite-2.3\r\nNet-FTP-Recursive-2.04\r\nNet-SSH-Expect-1.09\r\nNet-Telnet-Cisco-1.10\r\nXML-Simple-2.18\r\n\r\nContent of itsb-router.xml:\r\n&lt;configuration&gt;\r\n  &lt;ssh&gt;\r\n    &lt;commands_after&gt;show run&lt;/commands_after&gt;\r\n    &lt;itsb host=&quot;Ip ADDRESS&quot; port=&quot;22&quot; username=&quot;xxx&quot; password=&quot;xxx&quot; timeout=&quot;1&quot; output_file=&quot;./itsb.log&quot; ssh_options=&quot;-v&quot; login_prompt='(?m:^\\s*[\\w.-]+\\s?(?:\\(config[^\\)]*\\))?\\s?[\\$#&gt;]\\s?(?:\\(enable\\))?\\s*$)' password_prompt='[Pp]assword.*?:|[Pp]assphrase.*?:' prompt='(?m:^\\s*[\\w.-]+\\s?(?:\\(config[^\\)]*\\))?\\s?[\\$#&gt;]\\s?(?:\\(enable\\))?\\s*$)'&gt;\r\n      &lt;commands timeout=&quot;1&quot; prompt='\\s*[Pp]assword:\\s*'&gt;enable&lt;/commands&gt;\r\n      &lt;commands&gt;password&lt;/commands&gt;\r\n      &lt;commands&gt;terminal length 0&lt;/commands&gt;\r\n      &lt;commands&gt;show version&lt;/commands&gt;\r\n    &lt;/itsb&gt;\r\n  &lt;/ssh&gt;\r\n&lt;/configuration&gt;\r\n\r\n\r\nThanks.\r\n\r\nRegards,\r\nAnthony",
+            "published" : "2011-05-07T18:50:49.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 1,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "",
+            "published" : "2011-05-11T06:54:35.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate",
+              "status" : "Accepted",
+              "owner" : "petr.ruzicka",
+              "labels" : [ "Type-Defect", "Priority-High", "OpSys-All", "Usability", "Component-Scripts" ]
+            },
+            "canDelete" : true
+          }, {
+            "id" : 2,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "Hello.\r\n\r\nI was able to reproduce your issue. \r\nCan you please try to add the following line in the beginning (to the \"use section\") of the script and reproduce the issue?\r\n\r\nuse FileHandle;\r\n\r\n-> This helped me to get rid of \"Can't locate object method \"read\" via package \"FileHandle\"\" issue.\r\n\r\nPlease let me know...\r\n\r\nThank you\r\n\r\nPetr Ruzicka\r\n",
+            "published" : "2011-05-11T06:58:06.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 3,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "anthohjy",
+              "htmlLink" : "https://code.google.com/u/106966568905529618214/"
+            },
+            "content" : "Hi Petr,\r\n\r\nYes that solves the issue. Anyway did you know what could have caused this?\r\n\r\nUse of /g modifier is meaningless in split at /usr/local/share/perl/5.10.0/Net/Telnet/Cisco.pm line 756.\r\n\r\nRegards,\r\nAnthony",
+            "published" : "2011-05-13T05:14:56.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 4,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "Hello Anthony.\r\n\r\nI'm using default Debian package libnet-telnet-cisco-perl [1.10-5] and I'm not able to reproduce the '/g' issue.\r\n\r\nHere is my Cisco.pm version:\r\n\r\n$ grep '$Id:' /usr/share/perl5/Net/Telnet/Cisco.pm\r\n# $Id: Cisco.pm,v 1.11 2002/12/31 00:12:32 jkeroes Exp $\r\n\r\n\r\nActually if I use the latest version of Cisco.pm from cpan\r\n\r\nhttp://cpansearch.perl.org/src/JOSHUA/Net-Telnet-Cisco-1.10/Cisco.pm\r\n\r\nI can reproduce the issue you mentioned above...\r\n\r\nIf you don't want to downgrade your Cisco.pm version you can fix it by removing the \"-w\" from the first line of the script.\r\nBecause I guess the problem is in Cisco.pm module and not in my script.\r\n\r\nSee the following example:\r\n\r\n\r\n#!/usr/bin/perl -w\r\n\r\nuse Net::Telnet::Cisco;\r\n\r\n$session = Net::Telnet::Cisco->new(\r\n    Host => \"127.0.0.1\",\r\n    Timeout => 10,\r\n    Input_log => \"xxx\",\r\n    Prompt => \"/xxx/\",\r\n);\r\n\r\n--> This will print the \"/g modifier\" error and it's just basic usage.\r\n\r\nNormally I will rise a bug for the Net::Telnet::Cisco, but if the last update is from 2002 probably nobody is fixing the bugs in this module...\r\n\r\nRegards\r\n\r\nPetrR\r\n",
+            "published" : "2011-05-13T07:06:54.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 5,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "",
+            "published" : "2011-10-25T07:05:01.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate",
+              "status" : "Fixed"
+            },
+            "canDelete" : true
+          } ]
+        }
+      }, {
+        "kind" : "projecthosting#issue",
+        "id" : 3,
+        "title" : "SSH options are not used during connection creation",
+        "summary" : "SSH options are not used during connection creation",
+        "stars" : 1,
+        "starred" : false,
+        "status" : "Fixed",
+        "state" : "closed",
+        "labels" : [ "Type-Defect", "Priority-Medium" ],
+        "author" : {
+          "kind" : "projecthosting#issuePerson",
+          "name" : "sshvetsov",
+          "htmlLink" : "https://code.google.com/u/113036707377007500168/"
+        },
+        "owner" : {
+          "kind" : "projecthosting#issuePerson",
+          "name" : "petr.ruzicka",
+          "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+        },
+        "updated" : "2011-10-25T07:52:17.000Z",
+        "published" : "2011-09-23T04:03:36.000Z",
+        "closed" : "2011-10-25T07:04:12.000Z",
+        "projectId" : "configdownload",
+        "canComment" : true,
+        "canEdit" : true,
+        "comments" : {
+          "kind" : "projecthosting#issueCommentList",
+          "totalResults" : 5,
+          "items" : [ {
+            "id" : 0,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "sshvetsov",
+              "htmlLink" : "https://code.google.com/u/113036707377007500168/"
+            },
+            "content" : "<b>What version of the product are you using? On what operating system?</b>\nconfig_download.pl v0.2 on Debian 5.0.8\r\n\r\n<b>Please provide any additional information below.</b>\nIt appears that neither SSH options defined by &quot;ssh_options&quot; parameter inside xml configuration, nor hard coded contents of &quot;default_ssh_options&quot; variable within config_download.pl script itself, are passed to Net::SSH::Expect during SSH session creation.\r\n\r\nThis issue can be fixed by adding:\r\n\r\n&lt;code&gt;ssh_option = $ssh_options,&lt;/code&gt;\r\n\r\nto config_download.pl file in &quot;SSH section&quot; after line 302:\r\n\r\n&lt;code&gt;raw_pty =&gt; 1,&lt;/code&gt;\r\n",
+            "published" : "2011-09-23T04:03:36.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 1,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "",
+            "published" : "2011-10-25T06:55:12.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate",
+              "status" : "Accepted"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 2,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "",
+            "published" : "2011-10-25T07:02:47.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate",
+              "owner" : "petr.ruzicka"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 3,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "petr.ruzicka",
+              "htmlLink" : "https://code.google.com/u/113333269677993206945/"
+            },
+            "content" : "Hello.\r\n\r\nThank you for reporting it. You are right and I missed this. I fixed it in SVN. \r\n\r\nThank you\r\n\r\nPetr Ruzicka",
+            "published" : "2011-10-25T07:04:12.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate",
+              "status" : "Fixed"
+            },
+            "canDelete" : true
+          }, {
+            "id" : 4,
+            "kind" : "projecthosting#issueComment",
+            "author" : {
+              "kind" : "projecthosting#issuePerson",
+              "name" : "sshvetsov",
+              "htmlLink" : "https://code.google.com/u/113036707377007500168/"
+            },
+            "content" : "My pleasure. Found your tools very handy. Keep up the good work!",
+            "published" : "2011-10-25T07:52:17.000Z",
+            "updates" : {
+              "kind" : "projecthosting#issueCommentUpdate"
+            },
+            "canDelete" : true
+          } ]
+        }
+      } ]
+    }
+  } ]
+}
